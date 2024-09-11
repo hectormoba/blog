@@ -1,0 +1,21 @@
+---
+import BlogListElement from "./BlogListElement.astro";
+const allPosts = await Astro.glob("../content/blog/*.{md,mdx}");
+---
+
+<h2>Publicaciones</h2>
+<section>
+    <ul>
+        {
+            allPosts.map((post) => (
+                <BlogListElement title={post.frontmatter.title} />
+            ))
+        }
+    </ul>
+</section>
+<style>
+    ul {
+        margin: 0;
+        padding: 10px;
+    }
+</style>

@@ -1,0 +1,32 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import BlogPosts from "../components/BlogPosts.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body>
+        <Header />
+        <main>
+            <h1>Hola, mi nombre es Hector</h1>
+            <p>
+                Soy desarrollador de software, especializado en tecnologias
+                Frontend. En este blog escribo articulos tecnicos, curiosidades
+                del mundo de la tencologia, pero tambien sobre crecimiento
+                personal y experiencias de vida.
+            </p>
+            <p>
+                Si quieres saber mas sobre mi y sobre mis proyectos, consulta
+                <a href="/about">esta pagina</a>
+            </p>
+            <BlogPosts />
+        </main>
+        <Footer />
+    </body>
+</html>
