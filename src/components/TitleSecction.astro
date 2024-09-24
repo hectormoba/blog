@@ -1,0 +1,26 @@
+<section>
+    <div class="title_wrapper">
+        <h1>Hola, mi nombre es Hector</h1>
+        <p>
+            Soy desarrollador de software, especializado en tecnologias
+            Frontend. En este blog escribo articulos tecnicos, curiosidades del
+            mundo de la tencologia, pero tambien sobre crecimiento personal y
+            experiencias de vida.
+        </p>
+        <p>
+            Si quieres saber mas sobre mi y sobre mis proyectos, consulta
+            <a href="/about">esta pagina</a>
+        </p>
+    </div>
+</section>
+<style>
+    section {
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: repeat(8, 1fr);
+    }
+
+    .title_wrapper {
+        grid-column: 1 / 6;
+    }
+</style>

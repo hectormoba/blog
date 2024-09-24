@@ -1,18 +1,72 @@
 ---
-const { title, date } = Astro.props;
+const { title, pubDate, type } = Astro.props;
+const date = new Date(pubDate).getTime();
+const now = new Date().getTime();
+const differenceBetweenDatesInDays = Math.round(
+    (now - date) / 1000 / 60 / 60 / 24,
+);
+const isANewPost = differenceBetweenDatesInDays <= 10;
 ---
 
 <li>
-    <div>
-        <a>{title}</a>
-        <p></p>
-    </div>
-    <p>
-        {date}
-        <p></p>
-    </p>
+    <span>{pubDate}</span>
+    <span>{title}</span>
+    <span class="type">{type}</span>
+    {isANewPost && <span class="new_badge">NEW!</span>}
 </li>
 <style>
     li {
+        list-style: none;
+        padding: 8px 4px;
+        border-top: 2px solid var(--black);
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    li:hover {
+        background-color: var(--accent);
+        cursor: pointer;
+    }
+
+    .type {
+        border: 1px dotted #1e1e1e40;
+        border-radius: 5px;
+        padding: 0 4px;
+    }
+
+    .new_badge {
+        position: absolute;
+        z-index: 3;
+        visibility: hidden;
+        background-color: #fff;
+        padding: 2px 5px;
+    }
+    .visible {
+        visibility: visible !important;
     }
 </style>
+<script>
+    const listEls = document.querySelectorAll("li");
+    listEls.forEach((el) => {
+        const badgeEL = el.querySelector(".new_badge");
+        if (!badgeEL) return;
+        el.addEventListener("mouseenter", () => {
+            badgeEL.classList.add("visible");
+        });
+        el.addEventListener("mousemove", (event) => {
+            if (badgeEL instanceof HTMLElement) {
+                const { x, y } = el.getBoundingClientRect();
+                if (el.clientWidth - (event.clientX - x) <= 100) {
+                    badgeEL.style.left = `${event.clientX - x - 50}px`;
+                } else {
+                    badgeEL.style.left = `${event.clientX - x + 14}px`;
+                }
+                badgeEL.style.top = `${event.clientY - y + 2}px`;
+            }
+        });
+        el.addEventListener("mouseleave", (event) => {
+            badgeEL.classList.remove("visible");
+        });
+    });
+</script>

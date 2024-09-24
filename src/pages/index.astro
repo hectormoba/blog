@@ -3,6 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import BlogPosts from "../components/BlogPosts.astro";
+import TitleSection from "../components/TitleSecction.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 ---
 
@@ -13,20 +14,23 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
     </head>
     <body>
         <Header />
-        <main>
-            <h1>Hola, mi nombre es Hector</h1>
-            <p>
-                Soy desarrollador de software, especializado en tecnologias
-                Frontend. En este blog escribo articulos tecnicos, curiosidades
-                del mundo de la tencologia, pero tambien sobre crecimiento
-                personal y experiencias de vida.
-            </p>
-            <p>
-                Si quieres saber mas sobre mi y sobre mis proyectos, consulta
-                <a href="/about">esta pagina</a>
-            </p>
-            <BlogPosts />
-        </main>
-        <Footer />
+        <div class="main_grid_wrapper">
+            <main>
+                <TitleSection />
+                <BlogPosts />
+            </main>
+
+            <Footer />
+        </div>
     </body>
 </html>
+<style>
+    .main_grid_wrapper {
+        display: grid;
+        width: 100%;
+        grid-auto-rows: auto;
+        grid-auto-flow: row;
+        padding: 0 12px;
+        row-gap: 0;
+    }
+</style>
