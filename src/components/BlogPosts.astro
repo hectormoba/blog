@@ -1,18 +1,102 @@
 ---
 import { getCollection } from "astro:content";
+import { BLOG_POST_TYPE } from "../consts.js";
+const { expanded = false } = Astro.props;
 import BlogListElement from "./BlogListElement.astro";
 const allPosts = await getCollection("blog");
 ---
 
 <h2>Publicaciones</h2>
-<section>
-    <ul>
-        {allPosts.map(({ data }) => <BlogListElement {...data} />)}
-    </ul>
-</section>
-<style>
-    ul {
-        margin: 0;
-        padding: 10px;
+<div class="publications_wrapper">
+    {
+        expanded && (
+            <div class="filters_wrapper">
+                <h4>Filters/</h4>
+                <div class="filters_list">
+                    {BLOG_POST_TYPE.map((el) => (
+                        <button class="filter">
+                            <span>{el}</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+        )
     }
-</style>
+    <section>
+        <ul>
+            {
+                allPosts.map(({ data, slug }) => (
+                    <BlogListElement data={data} postUlr={slug} />
+                ))
+            }
+        </ul>
+    </section>
+    <div>
+        <style>
+            .publications_wrapper {
+                width: 100%;
+                @media (min-width: 960px) {
+                    display: flex;
+                }
+            }
+            ul {
+                margin: 0;
+                padding: 15px 0;
+            }
+            .filters_wrapper {
+                display: flex;
+                gap: 5px;
+                h4 {
+                    margin: 0;
+                    margin-top: 4px;
+                }
+                @media (min-width: 960px) {
+                    flex-direction: column;
+                    flex-basis: 20%;
+                    padding-right: 15px;
+                }
+            }
+
+            .filters_list {
+                @media (min-width: 960px) {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+            .filter {
+                border: 2px solid transparent;
+                border-radius: 4px;
+                background-color: transparent;
+                color: var(--light-gray);
+                padding: 4px 8px;
+                &:hover {
+                    color: var(--gray-dark);
+                    cursor: pointer;
+                }
+            }
+
+            .active_filter {
+                border: 2px solid var(--accent);
+                color: var(--gray-dark);
+            }
+
+            section {
+                @media (min-width: 960px) {
+                    flex-basis: 80%;
+                }
+            }
+        </style>
+        <script>
+            const filters = document.querySelectorAll(".filter");
+            filters.forEach((el) => {
+                el.addEventListener("click", () => {
+                    filters.forEach((el) => {
+                        if (!el.classList.contains("active_filter")) return;
+                        el.classList.remove("active_filter");
+                    });
+                    el.classList.add("active_filter");
+                });
+            });
+        </script>
+    </div>
+</div>

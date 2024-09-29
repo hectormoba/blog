@@ -2,8 +2,6 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import BlogPosts from "../components/BlogPosts.astro";
-import TitleSection from "../components/TitleSecction.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 ---
 
@@ -13,15 +11,11 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
     </head>
     <body>
-        <Header />
-        <div class="main_grid_wrapper">
-            <main>
-                <TitleSection />
-                <BlogPosts />
-                <section id="show_more_section">
-                    <a>{"Show more >>>"}</a>
-                </section>
-            </main>
+        <div>
+            <Header />
+            <div class="main_grid_wrapper">
+                <slot />
+            </div>
             <Footer />
         </div>
     </body>

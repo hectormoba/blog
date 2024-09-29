@@ -13,6 +13,7 @@
     --gray: #eee5e9;
     --gray-light: #eee5e9;
     --pearl-white: #f8f4ec;
+    --light-gray: #1e1e1e44;
     --gray-dark: 34, 41, 57;
     --gray-gradient: background: rgb(255, 253, 250);
     --box-shadow: 0 2px 6px rgba(var(--gray), 25%),
@@ -74,9 +75,13 @@ h3,
 h4,
 h5,
 h6 {
-    letter-spacing: -0.15rem;
     color: rgb(var(--black));
     line-height: 1.2;
+}
+h1,
+h2,
+h3 {
+    letter-spacing: -0.15rem;
 }
 h1 {
     font-size: 3.052em;
@@ -145,6 +150,16 @@ blockquote {
 hr {
     border: none;
     border-top: 1px solid rgb(var(--gray-light));
+}
+
+.main_grid_wrapper {
+    display: grid;
+    width: 100%;
+    grid-auto-rows: auto;
+    grid-auto-flow: row;
+    padding: 0 12px;
+    row-gap: 0;
+    min-height: 100vh;
 }
 @media (max-width: 720px) {
     body {
