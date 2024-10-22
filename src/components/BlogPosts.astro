@@ -1,102 +1,156 @@
 ---
 import { getCollection } from "astro:content";
 import { BLOG_POST_TYPE } from "../consts.js";
-const { expanded = false } = Astro.props;
 import BlogListElement from "./BlogListElement.astro";
+import CheckBox from "./svg/CheckBox.astro";
+
 const allPosts = await getCollection("blog");
+const { expanded = false } = Astro.props;
 ---
 
 <h2>Publicaciones</h2>
 <div class="publications_wrapper">
-    {
-        expanded && (
-            <div class="filters_wrapper">
-                <h4>Filters/</h4>
-                <div class="filters_list">
-                    {BLOG_POST_TYPE.map((el) => (
-                        <button class="filter">
-                            <span>{el}</span>
-                        </button>
-                    ))}
-                </div>
-            </div>
-        )
-    }
-    <section>
-        <ul>
-            {
-                allPosts.map(({ data, slug }) => (
-                    <BlogListElement data={data} postUlr={slug} />
-                ))
-            }
-        </ul>
-    </section>
-    <div>
-        <style>
-            .publications_wrapper {
-                width: 100%;
-                @media (min-width: 960px) {
-                    display: flex;
-                }
-            }
-            ul {
-                margin: 0;
-                padding: 15px 0;
-            }
-            .filters_wrapper {
-                display: flex;
-                gap: 5px;
-                h4 {
-                    margin: 0;
-                    margin-top: 4px;
-                }
-                @media (min-width: 960px) {
-                    flex-direction: column;
-                    flex-basis: 20%;
-                    padding-right: 15px;
-                }
-            }
-
-            .filters_list {
-                @media (min-width: 960px) {
-                    display: flex;
-                    flex-direction: column;
-                }
-            }
-            .filter {
-                border: 2px solid transparent;
-                border-radius: 4px;
-                background-color: transparent;
-                color: var(--light-gray);
-                padding: 4px 8px;
-                &:hover {
-                    color: var(--gray-dark);
-                    cursor: pointer;
-                }
-            }
-
-            .active_filter {
-                border: 2px solid var(--accent);
-                color: var(--gray-dark);
-            }
-
-            section {
-                @media (min-width: 960px) {
-                    flex-basis: 80%;
-                }
-            }
-        </style>
-        <script>
-            const filters = document.querySelectorAll(".filter");
-            filters.forEach((el) => {
-                el.addEventListener("click", () => {
-                    filters.forEach((el) => {
-                        if (!el.classList.contains("active_filter")) return;
-                        el.classList.remove("active_filter");
-                    });
-                    el.classList.add("active_filter");
-                });
-            });
-        </script>
-    </div>
+  {
+    expanded && (
+      <div class="filters_wrapper">
+        <h4>Filters/</h4>
+        <div class="filters_list">
+          {BLOG_POST_TYPE.map((type) => (
+            <button class="filter">
+              <CheckBox class="unchecked visible" />
+              <CheckBox class="checked" checked />
+              <span class="filter_text">{type}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+  <section class:list={{ not_expanded: !expanded }}>
+    <ul>
+      {
+        allPosts.map(({ data, slug }) => (
+          <BlogListElement data={data} postUlr={slug} />
+        ))
+      }
+    </ul>
+  </section>
 </div>
+<style>
+  .publications_wrapper {
+    width: 100%;
+    margin-bottom: 10px;
+    @media (min-width: 960px) {
+      display: flex;
+    }
+  }
+  ul {
+    margin: 0;
+    padding: 15px 0;
+  }
+  .filters_wrapper {
+    display: flex;
+    gap: 5px;
+    h4 {
+      margin: 0;
+      margin-top: 4px;
+    }
+    @media (min-width: 960px) {
+      flex-direction: column;
+      flex-basis: 20%;
+      padding-right: 15px;
+    }
+  }
+
+  .filters_list {
+    @media (min-width: 960px) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .filter {
+    border: 2px solid transparent;
+    border-radius: 4px;
+    background-color: transparent;
+    color: var(--light-gray);
+    padding: 4px 8px;
+    &:hover {
+      color: var(--gray-dark);
+      cursor: pointer;
+    }
+    @media (min-width: 960px) {
+      border-width: 0;
+      padding: 2px 4px;
+      border-radius: 0;
+    }
+  }
+
+  .active_filter {
+    border: 2px solid var(--accent);
+    color: var(--gray-dark);
+    @media (min-width: 960px) {
+      border: 0;
+    }
+    .filter_text {
+      @media (min-width: 960px) {
+        padding: 1px 2px;
+        background-color: var(--accent);
+      }
+    }
+  }
+
+  .checked,
+  .unchecked {
+    display: none;
+  }
+
+  .visible {
+    @media (min-width: 960px) {
+      display: inline-block !important;
+    }
+  }
+
+  section {
+    @media (min-width: 960px) {
+      flex-basis: 80%;
+    }
+  }
+
+  .not_expanded {
+    @media (min-width: 960px) {
+      flex: 1 1 100%;
+    }
+  }
+</style>
+<script>
+  const filters = document.querySelectorAll(".filter");
+  filters.forEach((el) => {
+    el.addEventListener("click", () => {
+      const firstStateWasChecked = el.classList.contains("active_filter");
+      filters.forEach((el) => {
+        if (!el.classList.contains("active_filter")) return;
+        el.classList.remove("active_filter");
+        const checkedElement = el.querySelector(".checked");
+        const uncheckedElement = el.querySelector(".unchecked");
+        if (checkedElement) {
+          checkedElement.classList.remove("visible");
+        }
+        if (uncheckedElement) {
+          uncheckedElement.classList.add("visible");
+        }
+      });
+      if (firstStateWasChecked) return;
+      el.classList.add("active_filter");
+      const checkedElement = el.querySelector(".checked");
+      const uncheckedElement = el.querySelector(".unchecked");
+      if (checkedElement) {
+        checkedElement.classList.add("visible");
+      }
+      if (uncheckedElement) {
+        uncheckedElement.classList.remove("visible");
+      }
+    });
+  });
+</script>
