@@ -16,7 +16,6 @@ const { description, heroImage, title } = Astro.props;
       main {
         width: calc(100% - 2em);
         max-width: 100%;
-        margin: 0;
       }
       .hero-image {
         width: 100%;
@@ -30,8 +29,10 @@ const { description, heroImage, title } = Astro.props;
       .text_layout {
         width: 720px;
         max-width: calc(100% - 2em);
-        margin: auto;
-        padding: 1em;
+        @media (min-width: 960px) {
+          width: 1020px;
+          margin: 0 auto;
+        }
       }
     </style>
   </head>
@@ -43,7 +44,12 @@ const { description, heroImage, title } = Astro.props;
         {
           heroImage && (
             <div class="hero-image">
-              <img width={1020} height={510} src={heroImage} alt="" />
+              <img
+                width={1020}
+                height={510}
+                src={heroImage}
+                alt="A pixelated coast"
+              />
             </div>
           )
         }

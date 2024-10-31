@@ -9,20 +9,20 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    </head>
-    <body>
-        <Header />
-        <div class="main_grid_wrapper">
-            <main>
-                <TitleSection />
-                <BlogPosts />
-                <section>
-                    <a class="link_button">{"Show more"}</a>
-                </section>
-            </main>
-            <Footer />
-        </div>
-    </body>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <div class="main_grid_wrapper">
+      <main>
+        <TitleSection />
+        <BlogPosts />
+        <section>
+          <a href="/blog" class="link_button">{"Show more"}</a>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  </body>
 </html>

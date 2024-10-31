@@ -11,7 +11,6 @@ const { description, title, lastUpdated, pubDate, minutesRead } = Astro.props;
     <BaseHead title={title} description={description} />
     <style>
       main {
-        width: calc(100% - 2em);
         max-width: 100%;
         margin: 0;
       }
@@ -20,19 +19,16 @@ const { description, title, lastUpdated, pubDate, minutesRead } = Astro.props;
         padding: 1em;
         display: grid;
         grid-template-columns: repeat(12, 1fr);
-        grid-template-rows: 20vh 1fr;
-        h1 {
-          grid-column: 1 / 12;
+        grid-template-rows: 15vh 150px 1fr;
+        .title {
+          grid-column: 1 / 13;
+          grid-row: 1 / 2;
         }
         aside {
           grid-row: 2 / 3;
-          grid-column: 1 / 4;
+          grid-column: 1 / 13;
         }
-        .info {
-          position: sticky;
-          top: 40px;
-          padding-right: 20px;
-        }
+
         h2 {
           margin: 0;
           margin-bottom: 10px;
@@ -50,6 +46,18 @@ const { description, title, lastUpdated, pubDate, minutesRead } = Astro.props;
           margin-bottom: 5px;
           border-bottom: 1px dotted var(--gray-500);
         }
+        @media (min-width: 960px) {
+          grid-template-rows: 20vh 1fr;
+          aside {
+            grid-row: 2 / 3;
+            grid-column: 1 / 4;
+          }
+          .info {
+            position: sticky;
+            top: 40px;
+            padding-right: 20px;
+          }
+        }
       }
 
       .header_table {
@@ -58,8 +66,12 @@ const { description, title, lastUpdated, pubDate, minutesRead } = Astro.props;
       }
 
       .core_text {
-        grid-row: 2 / 3;
-        grid-column: 4 / 13;
+        grid-row: 3 / 4;
+        grid-column: 1 / 13;
+        @media (min-width: 960px) {
+          grid-column: 4 / 13;
+          grid-row: 2 / 3;
+        }
       }
     </style>
   </head>
@@ -68,7 +80,7 @@ const { description, title, lastUpdated, pubDate, minutesRead } = Astro.props;
     <Header />
     <main>
       <article class="text_layout">
-        <h1>{title}</h1>
+        <h1 class="title">{title}</h1>
         <aside>
           <div class="info">
             <h2>{title}</h2>
