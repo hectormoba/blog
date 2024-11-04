@@ -165,6 +165,15 @@ blockquote {
   text-align: center;
 }
 
+.visible {
+  visibility: visible !important;
+  display: inline-block !important;
+}
+
+.display_none {
+  display: none !important;
+}
+
 /* typography */
 
 .text-small {

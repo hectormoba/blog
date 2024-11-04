@@ -39,9 +39,13 @@ const { expanded = false } = Astro.props;
         <h4 class="type">*Type</h4>
       </li>
       {
-        allPosts.map(({ data, slug }) => (
+        expanded ? (allPosts.map(({ data, slug }) => (
           <BlogListElement data={data} postURL={slug} />
-        ))
+        ))) : (
+          allPosts.slice(0, 4).map(({ data, slug }) => (
+            <BlogListElement data={data} postURL={slug} />
+          ))
+        )
       }
     </ul>
   </section>

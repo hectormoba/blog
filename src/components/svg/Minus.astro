@@ -1,0 +1,18 @@
+---
+const { width = 10, class: className, ...rest } = Astro.props;
+---
+
+<svg
+  class={className}
+  width={width}
+  height={width}
+  viewBox="0 0 10 10"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  {...rest}
+  ><path d="M 0 5 L 10 5" stroke="currentColor" stroke-width="1"></path><path
+    class="AccordionButton_verticalPath__2lCIc AccordionButton_isOpen__t0wWH"
+    d="M 5 0 L 5 10"
+    stroke="currentColor"
+    stroke-width="1"></path></svg
+>

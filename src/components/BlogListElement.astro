@@ -1,5 +1,5 @@
 ---
-import Plus from "./svg/Plus.astro";
+import Sign from "./svg/Sign.astro";
 
 const { data, postURL } = Astro.props;
 const { pubDate, title, type, description } = data;
@@ -17,8 +17,8 @@ const isANewPost = differenceBetweenDatesInDays <= 10;
     <span class="title">{title}</span>
     <span class="type">{type}</span>
     {isANewPost && <span class="new_badge">NEW!</span>}
-    <span class="sign">
-      <Plus />
+    <span>
+      <Sign />
     </span>
   </div>
   <div class="accordion">
@@ -77,8 +77,14 @@ const isANewPost = differenceBetweenDatesInDays <= 10;
     }
   }
   .accordion {
-    display: none;
+    height: 0;
+    transition: all 800ms ease-in-out;
     grid-column: 1 / 13;
+    overflow: hidden;
+  }
+
+  .accordion_visible {
+    height: 200px;
     padding: 8px 4px;
   }
 
@@ -89,11 +95,6 @@ const isANewPost = differenceBetweenDatesInDays <= 10;
     background-color: #fff;
     padding: 2px 5px;
   }
-
-  .visible {
-    visibility: visible !important;
-    display: inline-block !important;
-  }
 </style>
 <script>
   const listEls = document.querySelectorAll("li");
@@ -102,9 +103,12 @@ const isANewPost = differenceBetweenDatesInDays <= 10;
     if (clickableEl) {
       clickableEl.addEventListener("click", () => {
         const accordionEl = el.querySelector(".accordion");
-        console.log(accordionEl);
         if (accordionEl) {
-          accordionEl.classList.toggle("visible");
+          accordionEl.classList.toggle("accordion_visible");
+          const plusLine = clickableEl.querySelector(".plus_sign_line");
+          if (plusLine) {
+            plusLine.classList.toggle("display_none");
+          }
         }
       });
     }
