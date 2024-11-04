@@ -1,0 +1,19 @@
+---
+import { BLOG_POST_TYPE } from "../../../consts";
+import MainLayout from "../../../layouts/MainLayout.astro";
+import BlogPosts from "../../../components/BlogPosts.astro";
+export async function getStaticPaths() {
+  return BLOG_POST_TYPE.map((type) => ({
+    params: { type: type },
+    props: { type },
+  }));
+}
+
+const { type } = Astro.props;
+---
+
+<MainLayout>
+  <main>
+    <BlogPosts expanded type={type} />
+  </main>
+</MainLayout>

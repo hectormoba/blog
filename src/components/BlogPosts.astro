@@ -4,11 +4,14 @@ import { BLOG_POST_TYPE } from "../consts.js";
 import BlogListElement from "./BlogListElement.astro";
 import CheckBox from "./svg/CheckBox.astro";
 
-const allPosts = await getCollection("blog");
-const { expanded = false } = Astro.props;
+const { expanded = false, type = '' } = Astro.props;
+const noTypeFilter = type === '';
+
+const allPosts = noTypeFilter ? await getCollection("blog") : await getCollection("blog", ({ data }) => data.type === type);
+const propsType = noTypeFilter ? '' : type;
 ---
 
-<h2 class="text_title">Publicaciones</h2>
+<h2 class="text_title">{noTypeFilter ? "Articles" : `Articles about ${type}`}</h2>
 <div
   class:list={[
     "publications_wrapper",
@@ -21,11 +24,11 @@ const { expanded = false } = Astro.props;
         <h4>*Filters</h4>
         <div class="filters_list">
           {BLOG_POST_TYPE.map((type) => (
-            <button class="filter">
-              <CheckBox class="unchecked visible" />
-              <CheckBox class="checked" checked />
+            <a class:list={["filter", {active_filter: (propsType == type)}]} href=`/blog/type/${type}`>
+              <CheckBox class:list={["unchecked", {visible: (propsType !== type)}]} />
+              <CheckBox class:list={["checked", {visible: (propsType === type)}]} checked />
               <span class="filter_text">{type}</span>
-            </button>
+            </a>
           ))}
         </div>
       </div>
@@ -104,6 +107,7 @@ const { expanded = false } = Astro.props;
   }
 
   .filter {
+    text-decoration: none;
     border: 2px solid transparent;
     background-color: transparent;
     color: var(--light-gray);
@@ -160,30 +164,11 @@ const { expanded = false } = Astro.props;
 <script>
   const filters = document.querySelectorAll(".filter");
   filters.forEach((el) => {
-    el.addEventListener("click", () => {
-      const firstStateWasChecked = el.classList.contains("active_filter");
-      filters.forEach((el) => {
-        if (!el.classList.contains("active_filter")) return;
-        el.classList.remove("active_filter");
-        const checkedElement = el.querySelector(".checked");
-        const uncheckedElement = el.querySelector(".unchecked");
-        if (checkedElement) {
-          checkedElement.classList.remove("visible");
-        }
-        if (uncheckedElement) {
-          uncheckedElement.classList.add("visible");
-        }
-      });
-      if (firstStateWasChecked) return;
-      el.classList.add("active_filter");
-      const checkedElement = el.querySelector(".checked");
-      const uncheckedElement = el.querySelector(".unchecked");
-      if (checkedElement) {
-        checkedElement.classList.add("visible");
-      }
-      if (uncheckedElement) {
-        uncheckedElement.classList.remove("visible");
-      }
-    });
+    el.addEventListener("click", (e) => {
+    if(el.classList.contains("active_filter")) {
+      e.preventDefault();
+      el.classList.remove("active_filter");
+      window.location.href = "/blog";
+    }})
   });
 </script>
