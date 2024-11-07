@@ -1,0 +1,138 @@
+---
+import Sign from "./svg/Sign.astro";
+
+const { data, postURL } = Astro.props;
+const { pubDate, title, type, description } = data;
+const date = new Date(pubDate).getTime();
+const now = new Date().getTime();
+const differenceBetweenDatesInDays = Math.round(
+  (now - date) / 1000 / 60 / 60 / 24
+);
+const isANewPost = differenceBetweenDatesInDays <= 10;
+---
+
+<li>
+  <div class="list_info">
+    <span class="date">{pubDate}</span>
+    <span class="title">{title}</span>
+    <span class="type">{type}</span>
+    {isANewPost && <span class="new_badge">NEW!</span>}
+    <span>
+      <Sign />
+    </span>
+  </div>
+  <div class="accordion">
+    <p>SUMMARY: {description}</p>
+    <p>TYPE: <span class="type">{type}</span></p>
+    <a class="link_button" href={`/blog/${postURL}`}>
+      <span>Read more</span>
+    </a>
+  </div>
+</li>
+<style>
+  li {
+    list-style: none;
+    border-top: 2px solid var(--black);
+    display: grid;
+    grid-row: auto;
+    grid-template-columns: repeat(12, 1fr);
+    position: relative;
+  }
+
+  .list_info {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: 1fr 1fr;
+    grid-column: 1 / 13;
+    padding: 8px 4px;
+    span {
+      font-size: 16px;
+    }
+    .date {
+      font-weight: 700;
+    }
+    .title {
+      text-overflow: ellipsis;
+    }
+    &:hover {
+      background-color: var(--accent);
+      cursor: pointer;
+    }
+    @media (min-width: 960px) {
+      grid-template-rows: 1fr;
+      .date {
+        font-weight: 300;
+      }
+    }
+  }
+
+  .list_info,
+  .accordion {
+    .type {
+      display: inline-block;
+      justify-self: start;
+      border: 1px dotted #1e1e1e40;
+      border-radius: 5px;
+      padding: 0 4px;
+    }
+  }
+  .accordion {
+    height: 0;
+    transition: all 800ms ease-in-out;
+    grid-column: 1 / 13;
+    overflow: hidden;
+  }
+
+  .accordion_visible {
+    height: 160px;
+    @media (min-width: 960px) {
+      height: 200px;
+      padding: 8px 2px;
+    }
+  }
+
+  .new_badge {
+    position: absolute;
+    z-index: 3;
+    visibility: hidden;
+    background-color: #fff;
+    padding: 2px 5px;
+  }
+</style>
+<script>
+  const listEls = document.querySelectorAll("li");
+  listEls.forEach((el) => {
+    const clickableEl = el.querySelector(".list_info");
+    if (clickableEl) {
+      clickableEl.addEventListener("click", () => {
+        const accordionEl = el.querySelector(".accordion");
+        if (accordionEl) {
+          accordionEl.classList.toggle("accordion_visible");
+          const plusLine = clickableEl.querySelector(".plus_sign_line");
+          if (plusLine) {
+            plusLine.classList.toggle("display_none");
+          }
+        }
+      });
+    }
+    const badgeEL = el.querySelector(".new_badge");
+    if (!badgeEL) return;
+    el.addEventListener("mouseenter", () => {
+      badgeEL.classList.add("visible");
+    });
+    el.addEventListener("mousemove", (event) => {
+      if (badgeEL instanceof HTMLElement) {
+        const { x, y } = el.getBoundingClientRect();
+        if (el.clientWidth - (event.clientX - x) <= 100) {
+          badgeEL.style.left = `${event.clientX - x - 50}px`;
+        } else {
+          badgeEL.style.left = `${event.clientX - x + 14}px`;
+        }
+        badgeEL.style.top = `${event.clientY - y + 2}px`;
+      }
+    });
+    el.addEventListener("mouseleave", () => {
+      badgeEL.classList.remove("visible");
+    });
+  });
+</script>

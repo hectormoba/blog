@@ -1,0 +1,185 @@
+<div class="animation">
+  <div class="cube pos1"></div>
+  <div class="cube pos2"></div>
+  <div class="cube pos3"></div>
+  <div class="cube pos4"></div>
+  <div class="cube pos5"></div>
+  <canvas id="animation_bg" width="248" height="248"></canvas>
+</div>
+<style>
+  .animation {
+    position: relative;
+    display: grid;
+    gap: 4px;
+    place-items: stretch;
+    grid-template-columns: repeat(3, 80px);
+    grid-template-rows: repeat(3, 80px);
+  }
+  #animation_bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .cube {
+    border-radius: 12px;
+    background-color: var(--accent);
+    margin-left: 4px;
+    margin-top: 4px;
+  }
+
+  .pos1 {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+  .pos2 {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+  .pos3 {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+  }
+  .pos4 {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+  }
+  .pos5 {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+  }
+</style>
+<script>
+  import gsap from "gsap";
+  const tl = gsap.timeline();
+  const duration = 1.4;
+  const regularTranslation = 80 + 4;
+  // FIRST ANIMATION
+  tl.to(".pos1", {
+    duration,
+    x: regularTranslation,
+    y: 0,
+    repeat: 0,
+  })
+    .to(
+      ".pos5",
+      {
+        duration,
+        x: regularTranslation,
+        y: 0,
+        repeat: 0,
+      },
+      "+=1"
+    )
+    .to(
+      ".pos2",
+      {
+        duration,
+        x: 0,
+        y: regularTranslation,
+        repeat: 0,
+      },
+      "+=1"
+    )
+    // SECOND ANIMATION
+    .to(
+      ".pos1",
+      {
+        duration,
+        x: 0,
+        y: 0,
+        repeat: 0,
+      },
+      "+=1"
+    )
+    .to(
+      ".pos3",
+      {
+        duration,
+        x: 0,
+        y: -regularTranslation,
+        repeat: 0,
+      },
+      "+=1"
+    )
+    .to(
+      ".pos5",
+      {
+        duration,
+        y: -regularTranslation,
+        repeat: 0,
+      },
+      "+=1"
+    )
+    .to(
+      ".pos2",
+      {
+        duration,
+        x: 0,
+        y: 0,
+        repeat: 0,
+      },
+      "+=1"
+    )
+    .to(
+      ".pos4",
+      {
+        duration,
+        x: regularTranslation,
+        repeat: 0,
+      },
+      "+=1"
+    )
+    //third animation
+    .to(
+      ".pos1",
+      {
+        duration,
+        y: regularTranslation,
+        repeat: 0,
+      },
+      "+=1"
+    )
+    .to(
+      ".pos4",
+      {
+        duration,
+        x: regularTranslation * 2,
+        repeat: 0,
+      },
+      "+=1"
+    )
+    .to(".pos2", {
+      duration,
+      x: 0,
+      y: regularTranslation,
+      repeat: 0,
+    })
+    // go to firts position
+    .to(".cube", {
+      duration,
+      x: 0,
+      y: 0,
+      repeat: 0,
+    });
+  tl.repeat(4);
+  const canvas = document.getElementById("animation_bg");
+  var context = canvas.getContext("2d");
+
+  function drawBoard() {
+    const w = canvas.width;
+    const h = canvas.height;
+    context.setLineDash([4, 15]);
+    for (var x = regularTranslation; x < w; x += regularTranslation) {
+      context.moveTo(x, 0);
+      context.lineTo(x, w);
+    }
+
+    for (var y = regularTranslation; y < h; y += regularTranslation) {
+      context.moveTo(0, y);
+      context.lineTo(w, y);
+    }
+    context.stroke();
+  }
+
+  drawBoard();
+</script>

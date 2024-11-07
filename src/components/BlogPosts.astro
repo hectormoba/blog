@@ -1,0 +1,159 @@
+---
+import { getCollection } from "astro:content";
+import { BLOG_POST_TYPE } from "../consts.js";
+import BlogListElement from "./BlogListElement.astro";
+import CheckBox from "./svg/CheckBox.astro";
+
+const { expanded = false, type = '' } = Astro.props;
+const noTypeFilter = type === '';
+
+const allPosts = noTypeFilter ? await getCollection("blog") : await getCollection("blog", ({ data }) => data.type === type);
+const propsType = noTypeFilter ? '' : type;
+---
+
+<h2 class="text_title">{noTypeFilter ? "Articles" : `Articles about ${type}`}</h2>
+<div
+  class:list={[
+    "publications_wrapper",
+    { simple_wrapper: !expanded, expanded_wrapper: expanded },
+  ]}
+>
+  {
+    expanded && (
+      <div class="filters_wrapper">
+        <h4>*Filters</h4>
+        <div class="filters_list">
+          {BLOG_POST_TYPE.map((type) => (
+            <a class:list={["filter", {active_filter: (propsType == type)}]} href=`/blog/type/${type}`>
+              <CheckBox class:list={["unchecked", {visible: (propsType !== type)}]} />
+              <CheckBox class:list={["checked", {visible: (propsType === type)}]} checked />
+              <span class="filter_text">{type}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    )
+  }
+  <section class:list={{ not_expanded: !expanded }}>
+    <ul>
+      <li class="list_header">
+        <h4 class="date">*Date</h4>
+        <h4 class="title">*Title</h4>
+        <h4 class="type">*Type</h4>
+      </li>
+      {
+        expanded ? (allPosts.map(({ data, slug }) => (
+          <BlogListElement data={data} postURL={slug} />
+        ))) : (
+          allPosts.slice(0, 4).map(({ data, slug }) => (
+            <BlogListElement data={data} postURL={slug} />
+          ))
+        )
+      }
+    </ul>
+  </section>
+</div>
+<style>
+  .publications_wrapper {
+    display: grid;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .simple_wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .expanded_wrapper {
+    grid-template-columns: 1fr;
+    @media (min-width: 960px) {
+      grid-template-columns: 150px 1fr;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 15px 0;
+    @media (min-width: 960px) {
+      padding: 0;
+    }
+  }
+
+  .filters_wrapper {
+    display: flex;
+    gap: 5px;
+    h4 {
+      margin: 0;
+      font-size: 20px;
+      margin-top: 4px;
+    }
+    @media (min-width: 960px) {
+      flex-direction: column;
+      flex-basis: 20%;
+      padding-right: 15px;
+      h4 {
+        border-bottom: 2px solid var(--black);
+        margin-top: 0;
+      }
+    }
+  }
+
+  .filters_list {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    @media (min-width: 768px) {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-start;
+    }
+
+    @media (min-width: 960px) {
+      gap: 5px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .filter {
+    text-decoration: none;
+    color: var(--light-gray);
+    &:hover {
+      color: var(--gray-dark);
+      cursor: pointer;
+    }
+  }
+
+  .active_filter {
+    color: var(--gray-dark);
+  }
+
+  .checked,
+  .unchecked {
+    display: none;
+  }
+
+  section {
+    .list_header {
+      display: none;
+      @media (min-width: 960px) {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      h4 {
+        font-weight: bold;
+        margin: 0;
+      }
+    }
+  }
+</style>
+<script>
+  const filters = document.querySelectorAll(".filter");
+  filters.forEach((el) => {
+    el.addEventListener("click", (e) => {
+    if(el.classList.contains("active_filter")) {
+      e.preventDefault();
+      el.classList.remove("active_filter");
+      window.location.href = "/blog";
+    }})
+  });
+</script>

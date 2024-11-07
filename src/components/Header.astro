@@ -1,0 +1,48 @@
+---
+import HeaderLink from "./HeaderLink.astro";
+import LinkArrow from "./svg/LinkArrow.astro";
+import pixels from "/pixels.ico";
+---
+
+<header>
+    <nav>
+        <HeaderLink href="/">
+            <img src={pixels} id="logo" />
+        </HeaderLink>
+        <HeaderLink href="/blog">BLOG</HeaderLink>
+        <HeaderLink href="/about">ABOUT</HeaderLink>
+        <HeaderLink href="" target="_blank" class="external_link">
+            <span> GITHUB</span>
+            <LinkArrow class="header_link" />
+        </HeaderLink>
+    </nav>
+</header>
+<style>
+    header {
+        position: sticky;
+        z-index: 1;
+        max-width: 1720px;
+        top: 0;
+    }
+    header nav {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    #logo {
+        margin-top: 3px;
+    }
+
+    .external_link .header_link {
+        visibility: hidden;
+        width: 0;
+        transition: all 0.7s ease-in-out;
+    }
+
+    .external_link:hover .header_link {
+        visibility: visible;
+        width: 12px;
+    }
+</style>
