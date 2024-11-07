@@ -99,8 +99,17 @@ const propsType = noTypeFilter ? '' : type;
   }
 
   .filters_list {
-    @media (min-width: 960px) {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    @media (min-width: 768px) {
       display: flex;
+      gap: 10px;
+      justify-content: flex-start;
+    }
+
+    @media (min-width: 960px) {
+      gap: 5px;
       flex-direction: column;
       align-items: flex-start;
     }
@@ -108,44 +117,20 @@ const propsType = noTypeFilter ? '' : type;
 
   .filter {
     text-decoration: none;
-    border: 2px solid transparent;
-    background-color: transparent;
     color: var(--light-gray);
-    padding: 4px 8px;
     &:hover {
       color: var(--gray-dark);
       cursor: pointer;
     }
-    @media (min-width: 960px) {
-      border-width: 0;
-      padding: 2px 4px;
-      border-radius: 0;
-    }
   }
 
   .active_filter {
-    border: 2px solid var(--accent);
     color: var(--gray-dark);
-    @media (min-width: 960px) {
-      border: 0;
-    }
-    .filter_text {
-      @media (min-width: 960px) {
-        padding: 1px 2px;
-        background-color: var(--accent);
-      }
-    }
   }
 
   .checked,
   .unchecked {
     display: none;
-  }
-
-  .visible {
-    @media (min-width: 960px) {
-      display: inline-block !important;
-    }
   }
 
   section {

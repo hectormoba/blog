@@ -43,7 +43,6 @@ body {
   font-family: "Rubik", "Helvetica Neue", "Arial", sans-serif;
   margin: 0;
   padding: 0;
-  min-width: 100vw;
   min-height: 100vh;
   word-wrap: break-word;
   overflow-wrap: break-word;

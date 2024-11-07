@@ -1,3 +1,7 @@
+---
+import Animation from "./Animation.astro";
+---
+
 <section>
   <div class="title_wrapper">
     <h1 class="main_title">Hola, mi nombre es Hector</h1>
@@ -12,12 +16,15 @@
       <a href="/about">esta pagina</a>
     </p>
   </div>
+  <div class="animation_wrapper">
+    <Animation client:load />
+  </div>
 </section>
 <style>
   section {
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(12, 1fr);
     h1 {
       font-size: 48px;
       margin: 12px 0;
@@ -26,12 +33,21 @@
   }
 
   .title_wrapper {
-    grid-column: 1 / 9;
+    grid-column: 1 / 10;
+  }
+
+  .animation_wrapper {
+    display: none;
   }
 
   @media (min-width: 768px) {
     .title_wrapper {
-      grid-column: 1 / 6;
+      grid-column: 1 / 7;
+    }
+    .animation_wrapper {
+      display: grid;
+      place-items: center;
+      grid-column: 9 / 12;
     }
   }
 </style>

@@ -22,7 +22,7 @@ const isANewPost = differenceBetweenDatesInDays <= 10;
     </span>
   </div>
   <div class="accordion">
-    <p>SUMMARY:{description}</p>
+    <p>SUMMARY: {description}</p>
     <p>TYPE: <span class="type">{type}</span></p>
     <a class="link_button" href={`/blog/${postURL}`}>
       <span>Read more</span>
@@ -84,8 +84,11 @@ const isANewPost = differenceBetweenDatesInDays <= 10;
   }
 
   .accordion_visible {
-    height: 200px;
-    padding: 8px 4px;
+    height: 160px;
+    @media (min-width: 960px) {
+      height: 200px;
+      padding: 8px 2px;
+    }
   }
 
   .new_badge {
